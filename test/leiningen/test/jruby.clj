@@ -8,9 +8,9 @@
 
 (def project (read-project "sample/project.clj"))
 
-; still ugly right now
-; (deftest test-rake-fail
-;   (jruby project "rake" "-f" "sample/Rakefile" "sdfgds"))
+; this is supposed to fail
+(deftest test-rake-fail
+  (jruby project "rake" "-f" "sample/Rakefile" "taskthatdoesntexist"))
 
 (deftest test-rake
   (jruby project "rake" "-f" "sample/Rakefile" "simple"))

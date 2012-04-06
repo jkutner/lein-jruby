@@ -1,6 +1,7 @@
 (ns leiningen.jruby
   (:require [lancet.core :as lancet]
-            [leiningen.classpath :as classpath])
+            [leiningen.classpath :as classpath]
+            [clojure.string :as str])
   (:import [org.jruby Main]
            [org.apache.tools.ant.types Path]
            [org.apache.tools.ant ExitException]))
@@ -12,11 +13,15 @@
 
 (defn- jruby-exec
   [project & keys]
-  (let [task (doto (lancet/instantiate-task lancet/ant-project "java"
-                                              (task-props project)))]
+  (let [url-classpath (seq (.getURLs (java.lang.ClassLoader/getSystemClassLoader)))
+        classpath (str/join java.io.File/pathSeparatorChar (map #(.getPath %) url-classpath))
+        task (doto (lancet/instantiate-task lancet/ant-project "java"
+                                              (task-props project))
+                  (.setClasspath (Path. lancet/ant-project classpath)))]
       (doseq [k keys] (.setValue (.createArg task) k))
       (.setFailonerror task false)
-      (try (.execute task) (catch ExitException println "Task failed!"))))
+      (.setFork task true)
+      (.execute task)))
 
 (defn- ensure-gems
   [project & gems]
