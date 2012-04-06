@@ -42,35 +42,6 @@ And of course you can start an irb session:
     $ lein jruby irb
     jruby-1.6.7 :001 >
 
-
-## Problems
-
-When a command fails (for example if you try to execute a Rake task that doesnt exist) you get a really nasty message:
-
-    Permissions.java:196:in `checkExit': org.apache.tools.ant.ExitException: Permission (java.lang.RuntimePermission exitVM) was not granted.
-        from Runtime.java:88:in `exit'
-        from System.java:921:in `exit'
-        from Main.java:190:in `main'
-        from NativeMethodAccessorImpl.java:-2:in `invoke0'
-        from NativeMethodAccessorImpl.java:39:in `invoke'
-        from DelegatingMethodAccessorImpl.java:25:in `invoke'
-        from Method.java:597:in `invoke'
-        from ExecuteJava.java:217:in `run'
-        from ExecuteJava.java:152:in `execute'
-        from Java.java:764:in `run'
-        from Java.java:218:in `executeJava'
-        from Java.java:132:in `executeJava'
-        from Java.java:105:in `execute'
-        from NativeMethodAccessorImpl.java:-2:in `invoke0'
-        from NativeMethodAccessorImpl.java:39:in `invoke'
-        from DelegatingMethodAccessorImpl.java:25:in `invoke'
-        from Method.java:597:in `invoke'
-        from Reflector.java:90:in `invokeMatchingMethod'
-        from Reflector.java:265:in `invokeNoArgInstanceMember'
-        from jruby.clj:19:in `doInvoke'
-
-This is just an annoyance though - no affect on behavior.  It'll get fixed soon.
-
 ## TODO
 
 +  add hooks
