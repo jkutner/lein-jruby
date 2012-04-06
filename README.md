@@ -1,6 +1,6 @@
 # lein-jruby
 
-This is a [Leiningen](https://github.com/technomancy/leiningen "Leiningen") plugin that allows you to run JRuby commands from a project.
+This is a [Leiningen](https://github.com/technomancy/leiningen "Leiningen") plugin that allows you to run JRuby commands from a Leiningen project.
 
 ## Configuration
 
