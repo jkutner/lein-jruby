@@ -1,0 +1,13 @@
+pom.xml
+*jar
+/lib/
+/classes/
+/.lein-deps-sum
+/.lein-failures
+/.lein-plugins
+sample/classes
+sample/lib
+sample/pom.xml
+sample/.lein-deps-sum
+sample/.lein-failures
+sample/.lein-plugins
