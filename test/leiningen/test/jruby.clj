@@ -20,7 +20,10 @@
 ;   (jruby project "bundle" "install"))
 
 (deftest test-jruby
-  (jruby project "exec" "-e" "p(100)"))
+  (jruby project "exec" "-e" "p(42)"))
 
 (deftest test-jruby
-  (jruby project "-e" "p(100)"))
+  (jruby project "-e" "p(42)"))
+
+(deftest test-jruby
+  (jruby project "-v"))

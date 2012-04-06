@@ -50,4 +50,5 @@
     "irb" (apply jruby-exec (concat [project "-S"] keys))
     "exec" (apply jruby-exec (cons project (rest keys)))
     "-S" (apply jruby-exec (cons project keys))
+    "-v" (apply jruby-exec (cons project keys))
     "-e" (apply jruby-exec (cons project keys))))
