@@ -4,11 +4,7 @@ This is a [Leiningen](https://github.com/technomancy/leiningen "Leiningen") plug
 
 ## Configuration
 
-Clone this project with Git, then run:
-
-    $ lein install
-
-Then add `[lein-jruby "0.1.0-SNAPSHOT"]` to the `:plugins` section of your `project.clj`
+Add `[lein-jruby "0.1.0"]` to the `:plugins` section of your `project.clj`
 
 ## Usage
 
