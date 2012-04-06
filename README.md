@@ -15,6 +15,7 @@ Then add `[lein-jruby "0.1.0-SNAPSHOT"]` to the `:plugins` section of your `proj
 This plugin provides the following commands:
 
     $ lein jruby bundle
+    $ lein jruby irb
     $ lein jruby rake
     $ lein jruby exec
     $ lein jruby -S XXXX
@@ -35,6 +36,12 @@ Or you can execute a Rake task:
 Or you can execute an inline script:
 
     $ lein jruby -e puts(42)
+
+And of course you can start an irb session:
+
+    $ lein jruby irb
+    jruby-1.6.7 :001 >
+
 
 ## Problems
 

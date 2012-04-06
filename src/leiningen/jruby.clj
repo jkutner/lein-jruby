@@ -42,5 +42,6 @@
   (case (first keys)
     "rake" (apply rake (cons project (rest keys)))
     "bundle" (apply bundle (cons project (rest keys)))
+    "irb" (apply jruby-exec (concat [project "-S"] keys))
     "-S" (apply jruby-exec (cons project keys))
     "-e" (apply jruby-exec (cons project keys))))
