@@ -1,0 +1,6 @@
+require 'rake'
+
+desc "A simple task"
+task :simple do
+  puts "Rake works!"
+end

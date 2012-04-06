@@ -9,8 +9,17 @@
 (def project (read-project "sample/project.clj"))
 
 
+(deftest test-rake-fail
+  (jruby project "rake" "-f" "sample/Rakefile" "sdfgds"))
+
 (deftest test-rake
-  (rake project))
+  (jruby project "rake" "-f" "sample/Rakefile" "simple"))
+
+; (deftest test-rake
+;   (jruby project "bundle" "install"))
+
+(deftest test-jruby
+  (jruby project "exec" "-e" "p(100)"))
 
 (deftest test-jruby
   (jruby project "-e" "p(100)"))
