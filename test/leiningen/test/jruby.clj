@@ -27,3 +27,19 @@
 
 (deftest test-jruby
   (jruby project "-v"))
+
+(deftest test-any-starts-with
+  (is (any-starts-with? "in" ["install"])))
+
+(deftest test-any-starts-without
+  (is (not (any-starts-with? "in" ["foobar"]))))
+
+(deftest test-gem-dir
+  (is (= ".lein-gems" gem-dir)))
+
+(deftest test-rubygems-dir
+  (is (= ".lein-gems/gems" rubygems-dir)))
+
+; not really sure if i want to install a gem everytime
+; (deftest test-gem-install
+;   (gem project "install" "json"))

@@ -5,6 +5,9 @@ pom.xml
 /.lein-deps-sum
 /.lein-failures
 /.lein-plugins
+sample/.bundle
+sample/.vagrant
+sample/.lein-gems
 sample/classes
 sample/lib
 sample/pom.xml
