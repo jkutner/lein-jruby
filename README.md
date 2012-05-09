@@ -46,6 +46,29 @@ You can also see what version of JRuby is running:
 
 Eventually, an excplicit dependencies on a particular version of ruby in your project.clj will override this.  But for now it's pegged to 1.6.7
 
+## Using RubyGems
+
+The plugin is intened to work without a local installation of JRuby.  It uses the JRuby provided by the `org.jruby/jruby-complete`.  Thus, there won't be a natural RubyGems installation directory.  Instead, `lein-jruby` will install all your Gems to the `.lein-gems` directory under your project's root.
+
+When you run:
+
+    lein jruby gem install json
+
+You'll see this:
+
+    project-root/
+    `-- .lein-gems/
+        `-- rubygems/
+            |-- bin/
+            |-- cache/
+            |-- doc/
+            |-- gems/
+                `-- json-1.6.6-java
+            `-- specifications/
+    
+
+And if you install via Bundler it will be a little different (there will be a `jruby` dir instead of a `rubygems` dir).  But it will all be under `.lein-gems`.  Eventually this will be configurable. 
+
 ## TODO
 
 +  add hooks
