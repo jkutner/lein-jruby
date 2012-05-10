@@ -48,6 +48,8 @@ Eventually, an excplicit dependencies on a particular version of ruby in your pr
 
 ## Using RubyGems
 
+_Since 0.1.1-SNAPSHOT_
+
 The plugin is intened to work without a local installation of JRuby.  It uses the JRuby provided by the `org.jruby/jruby-complete`.  Thus, there won't be a natural RubyGems installation directory.  Instead, `lein-jruby` will install all your Gems to the `.lein-gems` directory under your project's root.
 
 When you run:
@@ -70,6 +72,8 @@ You'll see this:
 And if you install via Bundler it will be a little different (there will be a `jruby` dir instead of a `rubygems` dir).  But it will all be under `.lein-gems`.  Eventually this will be configurable. 
 
 ## Where do I put my Ruby code?
+
+_Since 0.1.1-SNAPSHOT_
 
 Right now, you'll need to put your Ruby code under a `jruby` directory in your project root.  When you run `lein jruby irb` or any other command, those sources should be on your loadpath.
 
