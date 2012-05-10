@@ -32,7 +32,7 @@ Or you can execute a Rake task:
 
 Or you can execute an inline script:
 
-    $ lein jruby -e puts(42)
+    $ lein jruby -e "puts 42""
 
 And of course you can start an irb session:
 
