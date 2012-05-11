@@ -60,7 +60,7 @@ You'll see this:
 
     project-root/
     `-- .lein-gems/
-        `-- rubygems/
+        `-- gems/
             |-- bin/
             |-- cache/
             |-- doc/
@@ -75,20 +75,22 @@ And if you install via Bundler it will be a little different (there will be a `j
 
 _Since 0.1.1-SNAPSHOT_
 
-Right now, you'll need to put your Ruby code under a `jruby` directory in your project root.  When you run `lein jruby irb` or any other command, those sources should be on your loadpath.
+Right now, you'll need to put your Ruby code under the `src` directory in your project root.  When you run `lein jruby irb` or any other command, those sources should be on your loadpath.
 
-Take a look at the example in the `sample` directory.  There is a `jruby/config.ru` in it.  When you run this:
+Take a look at the example in the `sample` directory.  There is a `src/config.ru` in it.  When you run `rackup` like this:
 
     lein jruby -S rackup
     [2012-05-09 17:18:04] INFO  WEBrick 1.3.1
     [2012-05-09 17:18:04] INFO  ruby 1.8.7 (2012-02-22) [java]
     [2012-05-09 17:18:04] INFO  WEBrick::HTTPServer#start: pid=6367 port=9292
 
-It will boot up that app.  Eventually the app will have all your leiningen dependencies, and your clojure code on the path too.  But it doesn't yet.
+It will boot up the app in that app.  The app will have all your leiningen dependencies, and your clojure code on the classpath too!
 
 ## TODO
 
 +  add hooks
 
 +  allow jruby in project.clj to override plugin's default version
+
++ make it bundler smart. if there is a Gemfile, you don't need to add `bundle exec` (but we'll also need to add a way to turn that off -- kind of like warbler does)
 

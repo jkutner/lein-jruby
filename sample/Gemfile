@@ -1,4 +1,5 @@
 source :rubygems
 
-gem 'json'
-gem 'warbler'
+group :development do
+  gem 'sinatra'
+end

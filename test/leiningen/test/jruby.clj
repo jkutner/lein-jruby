@@ -38,8 +38,10 @@
   (is (= ".lein-gems" gem-dir)))
 
 (deftest test-rubygems-dir
-  (is (= ".lein-gems/gems" rubygems-dir)))
+  (is (= ".lein-gems/gems" rubygems-gem-path)))
 
 ; not really sure if i want to install a gem everytime
 ; (deftest test-gem-install
 ;   (gem project "install" "json"))
+
+; need some bundler tests!
