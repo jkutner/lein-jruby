@@ -9,11 +9,32 @@
            [org.apache.tools.ant.types Environment$Variable]
            [org.apache.tools.ant ExitException]))
 
+(def default-options
+  {:mode "1.8"
+   :bundler-version "1.1.3"})
+
+(defn- opts [project]
+    (merge default-options (:jruby-options project)))
+
 (def gem-dir ".lein-gems")
 
-(def bundler-18-gem-path (str gem-dir "/jruby/1.8"))
+(defn- bundler-18-gem-path 
+  [project]
+  (str (:root project) "/" gem-dir "/jruby/1.8"))
 
-(def bundler-19-gem-path (str gem-dir "/jruby/1.9"))
+(defn- bundler-19-gem-path 
+  [project]
+  (str (:root project) "/" gem-dir "/jruby/1.9"))
+
+(defn- bundler-gem-path 
+  [project]
+  (if (= (:mode (opts project)) "1.8") 
+    (bundler-18-gem-path project)
+    (bundler-19-gem-path project)))
+
+(defn- bundler-version
+  [project]
+  (:bundler-version (opts project)))
 
 (def rubygems-gem-path (str gem-dir "/gems"))
 
@@ -23,8 +44,7 @@
 
 (defn- gem-bundler-install-dir-arg 
   [project]
-  ; TODO test 1.8/1.9
-  (format "-i%s" (str (:root project) "/" bundler-18-gem-path)))
+  (format "-i%s" (bundler-gem-path project)))
 
 (defn- task-props [project]
   {:classname "org.jruby.Main"})
@@ -43,6 +63,8 @@
       ; this should really add all source paths
       ;(.setValue (.createArg task) (format "-I%s" (.getAbsolutePath full-jruby-dir)))
       ;(.setValue (.createArg task) "-rubygems")
+
+      (.setValue (.createArg task) (format "--%s" (:mode (opts project))))
 
       (doseq [k keys] (.setValue (.createArg task) k))
 
@@ -86,25 +108,24 @@
     ; right now :P
     (apply set-path [task (str (:root project) "/" rubygems-gem-path)]) 
 
-    (apply set-gem-home [task (str (:root project) "/" rubygems-gem-path)]) ;":" bundler-18-gem-path ":" bundler-19-gem-path)])
+    (apply set-gem-home [task (str (:root project) "/" rubygems-gem-path)]) 
 
     (.execute task)))
 
 (defn- jruby-bundle-exec
   [project & keys]
   (let [task (create-jruby-task project keys)
-        ; once we can configure 1.8 v 1.9 we'll need to adjust this
-        bundler-gem-path (str (:root project) "/" bundler-18-gem-path)] ; ":" "../" bundler-19-gem-path)])
+        bundler-path (bundler-gem-path project)] 
 
     (logger/debug (str "bundle exec" keys))
 
     ; this may not be a good idea, but can't find another way to get the rubygems bin picked up
     ; another option might be to put it on the classpath. kind of a pain to do that and I'm lazy
     ; right now :P
-    (apply set-path [task bundler-gem-path]) 
+    (apply set-path [task bundler-path]) 
 
-    (apply set-gem-home [task bundler-gem-path])
-    (apply set-gem-path [task bundler-gem-path]) ;(str bundler-gem-path ":" (str (:root project) "/" rubygems-gem-path))]) 
+    (apply set-gem-home [task bundler-path])
+    (apply set-gem-path [task bundler-path]) 
 
     (.execute task)))
 
@@ -127,8 +148,11 @@
   (apply ensure-gem-dir [project])
 
   ;yea, not really bundle execing, but we need that stuff on the gem path
-  (apply jruby-bundle-exec (concat 
-    [project "-S" "maybe_install_gems"] ["bundler"] [(gem-bundler-install-dir-arg project)])))
+  (apply jruby-bundle-exec 
+    [project "-S" "maybe_install_gems"
+    "bundler" 
+      (format "-v%s" (bundler-version project))]))
+      ;(gem-bundler-install-dir-arg project)]))
 
 (defn- ensure-gem
   [project gem]

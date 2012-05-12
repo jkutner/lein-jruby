@@ -2,7 +2,7 @@
   (:import [org.apache.tools.ant.types FileSet]
            java.io.File)
   (:use [leiningen.core :only (defproject read-project)]
-        clojure.test leiningen.jruby leiningen.test.helper))
+        clojure.test leiningen.jruby leiningen.test.helper clojure.contrib.io))
 
 (refer-private 'leiningen.jruby)
 
@@ -41,7 +41,10 @@
   (is (= ".lein-gems/gems" rubygems-gem-path)))
 
 ; not really sure if i want to install a gem everytime
-; (deftest test-gem-install
-;   (gem project "install" "json"))
+(deftest test-gem-install
+  (delete-file-recursively (str (:root project) "/.lein-gems"))
+  (gem project "install" "json"))
 
-; need some bundler tests!
+(deftest test-bundler
+  (delete-file-recursively (str (:root project) "/.lein-gems"))
+  (jruby project "bundle" "install"))

@@ -46,6 +46,16 @@ You can also see what version of JRuby is running:
 
 Eventually, an excplicit dependencies on a particular version of ruby in your project.clj will override this.  But for now it's pegged to 1.6.7
 
+## Configuration
+
+You can configure the plugin by adding a `:jruby-options` to your `project.clj`.  The supported options are:
+
++  `:mode` (either "1.8" or "1.9")
+
++  `:bundler-version`
+
+See the `sample/project.clj` for examples.
+
 ## Using RubyGems
 
 _Since 0.1.1-SNAPSHOT_
