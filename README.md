@@ -13,7 +13,6 @@ This plugin provides the following commands:
     $ lein jruby bundle
     $ lein jruby irb
     $ lein jruby rake
-    $ lein jruby exec
     $ lein jruby -S XXXX
     $ lein jruby -e XXXX
     $ lein jruby -v
@@ -24,7 +23,7 @@ For example, you can install some gem with bundler:
 
 Or you run a JRuby script like this:
 
-    $ lein jruby exec my_script.rb
+    $ lein jruby -S my_script.rb
 
 Or you can execute a Rake task:
 
