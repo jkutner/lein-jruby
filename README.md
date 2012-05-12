@@ -90,7 +90,11 @@ It will boot up the app in that app.  The app will have all your leiningen depen
 
 +  add hooks
 
++  add configuration: bundler version, src dir
+
 +  allow jruby in project.clj to override plugin's default version
 
-+ make it bundler smart. if there is a Gemfile, you don't need to add `bundle exec` (but we'll also need to add a way to turn that off -- kind of like warbler does)
++  irb isn't picking up the GEM_HOME (because of the way the task works)
+
++  make it bundler smart. if there is a Gemfile, you don't need to add `bundle exec` (but we'll also need to add a way to turn that off -- kind of like warbler does)
 

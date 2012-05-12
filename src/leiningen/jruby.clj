@@ -47,7 +47,7 @@
       (doseq [k keys] (.setValue (.createArg task) k))
 
       (.setFailonerror task false)
-      (.setFork task true)
+      (.setFork task (not (= "irb" (second keys))))
 
       ; i still don't get how it picks up the Gemfile and Rakefile with this set.. ?
       (if (.exists full-jruby-dir) (.setDir task full-jruby-dir))
@@ -126,7 +126,7 @@
   [project]
   (apply ensure-gem-dir [project])
 
-  ;yea, not really bundle exec, but we need that stuff on the gem path
+  ;yea, not really bundle execing, but we need that stuff on the gem path
   (apply jruby-bundle-exec (concat 
     [project "-S" "maybe_install_gems"] ["bundler"] [(gem-bundler-install-dir-arg project)])))
 
