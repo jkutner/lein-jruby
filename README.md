@@ -48,6 +48,8 @@ Eventually, an excplicit dependencies on a particular version of ruby in your pr
 
 ## Configuration
 
+_Since 0.1.1-SNAPSHOT_
+
 You can configure the plugin by adding a `:jruby-options` to your `project.clj`.  The supported options are:
 
 +  `:mode` (either "1.8" or "1.9")
