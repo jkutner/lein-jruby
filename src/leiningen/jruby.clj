@@ -3,7 +3,7 @@
   (:require [lancet.core :as lancet]
             [leiningen.classpath :as classpath]
             [clojure.string :as str]
-            [clojure.contrib.logging :as logger])
+            [clojure.tools.logging :as logger])
   (:import [org.jruby Main]
            [org.apache.tools.ant.types Path]
            [org.apache.tools.ant.types Environment$Variable]
@@ -18,17 +18,17 @@
 
 (def gem-dir ".lein-gems")
 
-(defn- bundler-18-gem-path 
+(defn- bundler-18-gem-path
   [project]
   (str (:root project) "/" gem-dir "/jruby/1.8"))
 
-(defn- bundler-19-gem-path 
+(defn- bundler-19-gem-path
   [project]
   (str (:root project) "/" gem-dir "/jruby/1.9"))
 
-(defn- bundler-gem-path 
+(defn- bundler-gem-path
   [project]
-  (if (= (:mode (opts project)) "1.8") 
+  (if (= (:mode (opts project)) "1.8")
     (bundler-18-gem-path project)
     (bundler-19-gem-path project)))
 
@@ -38,11 +38,11 @@
 
 (def rubygems-gem-path (str gem-dir "/gems"))
 
-(defn- gem-install-dir-arg 
+(defn- gem-install-dir-arg
   [project]
   (format "-i%s" (str (:root project) "/" rubygems-gem-path)))
 
-(defn- gem-bundler-install-dir-arg 
+(defn- gem-bundler-install-dir-arg
   [project]
   (format "-i%s" (bundler-gem-path project)))
 
@@ -53,7 +53,7 @@
 
 (defn- create-jruby-task
   [project keys]
-  (let [full-jruby-dir (file (:root project) "src")        
+  (let [full-jruby-dir (file (:root project) "src")
         url-classpath (seq (.getURLs (java.lang.ClassLoader/getSystemClassLoader)))
         classpath (str/join java.io.File/pathSeparatorChar (map #(.getPath %) url-classpath))
         task (doto (lancet/instantiate-task lancet/ant-project "java"
@@ -79,7 +79,7 @@
   [task gem-path]
   (let [envvar (new Environment$Variable)]
     ;(.setNewenvironment task true)
-    (.setKey envvar "GEM_PATH") 
+    (.setKey envvar "GEM_PATH")
     (.setValue envvar (str gem-path))
     (.addEnv task envvar)))
 
@@ -87,14 +87,14 @@
   [task gem-home]
   (let [envvar (new Environment$Variable)]
     ;(.setNewenvironment task true)
-    (.setKey envvar "GEM_HOME") 
+    (.setKey envvar "GEM_HOME")
     (.setValue envvar (str gem-home))
     (.addEnv task envvar)))
 
 (defn- set-path
   [task gem-dir]
   (let [envvar (new Environment$Variable)]
-    (.setKey envvar "PATH") 
+    (.setKey envvar "PATH")
     (.setValue envvar (str gem-dir "/bin"))
     (.addEnv task envvar)))
 
@@ -106,26 +106,26 @@
     ; this may not be a good idea, but can't find another way to get the rubygems bin picked up
     ; another option might be to put it on the classpath. kind of a pain to do that and I'm lazy
     ; right now :P
-    (apply set-path [task (str (:root project) "/" rubygems-gem-path)]) 
+    (apply set-path [task (str (:root project) "/" rubygems-gem-path)])
 
-    (apply set-gem-home [task (str (:root project) "/" rubygems-gem-path)]) 
+    (apply set-gem-home [task (str (:root project) "/" rubygems-gem-path)])
 
     (.execute task)))
 
 (defn- jruby-bundle-exec
   [project & keys]
   (let [task (create-jruby-task project keys)
-        bundler-path (bundler-gem-path project)] 
+        bundler-path (bundler-gem-path project)]
 
     (logger/debug (str "bundle exec" keys))
 
     ; this may not be a good idea, but can't find another way to get the rubygems bin picked up
     ; another option might be to put it on the classpath. kind of a pain to do that and I'm lazy
     ; right now :P
-    (apply set-path [task bundler-path]) 
+    (apply set-path [task bundler-path])
 
     (apply set-gem-home [task bundler-path])
-    (apply set-gem-path [task bundler-path]) 
+    (apply set-gem-path [task bundler-path])
 
     (.execute task)))
 
@@ -133,14 +133,14 @@
   [prefix strs]
   (some (fn [str] (.startsWith str prefix)) strs))
 
-(defn- ensure-gem-dir 
+(defn- ensure-gem-dir
   [project]
   (.mkdir (file (:root project) gem-dir)))
 
 (defn- ensure-gems
   [project & gems]
   (apply ensure-gem-dir [project])
-  (apply jruby-exec (concat 
+  (apply jruby-exec (concat
     [project "-S" "maybe_install_gems"] gems [(gem-install-dir-arg project)])))
 
 (defn- ensure-bundler
@@ -148,9 +148,9 @@
   (apply ensure-gem-dir [project])
 
   ;yea, not really bundle execing, but we need that stuff on the gem path
-  (apply jruby-bundle-exec 
+  (apply jruby-bundle-exec
     [project "-S" "maybe_install_gems"
-    "bundler" 
+    "bundler"
       (format "-v%s" (bundler-version project))]))
       ;(gem-bundler-install-dir-arg project)]))
 
@@ -176,9 +176,9 @@
   [project & args]
   (apply ensure-gem-dir [project])
   (if (any-starts-with? (first args) ["install" "uninstall" "update"])
-    (apply jruby-exec (concat 
+    (apply jruby-exec (concat
       [project "-S" "gem"] args [(gem-install-dir-arg project)]))
-    (apply jruby-exec (concat 
+    (apply jruby-exec (concat
       [project "-S" "gem"] args ))))
 
 (defn jruby

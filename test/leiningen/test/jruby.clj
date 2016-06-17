@@ -1,12 +1,13 @@
 (ns leiningen.test.jruby
   (:import [org.apache.tools.ant.types FileSet]
            java.io.File)
-  (:use [leiningen.core :only (defproject read-project)]
-        clojure.test leiningen.jruby leiningen.test.helper clojure.contrib.io))
+  (:use [leiningen.core.project :only (defproject read-raw)]
+        clojure.test leiningen.jruby leiningen.test.helper
+        clojure.java.io))
 
 (refer-private 'leiningen.jruby)
 
-(def project (read-project "sample/project.clj"))
+(def project (read-raw "sample/project.clj"))
 
 ; this is supposed to fail
 (deftest test-rake-fail
@@ -39,6 +40,16 @@
 
 (deftest test-rubygems-dir
   (is (= ".lein-gems/gems" rubygems-gem-path)))
+
+(defn delete-file-recursively
+"Delete file f. If it's a directory, recursively delete all its contents.
+Raise an exception if any deletion fails unless silently is true."
+    [f & [silently]]
+    (let [f (file f)]
+      (if (.isDirectory f)
+        (doseq [child (.listFiles f)]
+          (delete-file-recursively child silently)))
+      (delete-file f silently)))
 
 ; not really sure if i want to install a gem everytime
 (deftest test-gem-install
